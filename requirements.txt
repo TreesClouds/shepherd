@@ -13,4 +13,5 @@ gevent-websocket
 ##### Type checking #####
 typeguard
 
-
+##### Config #####
+pyyaml
