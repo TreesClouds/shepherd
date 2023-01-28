@@ -6,7 +6,7 @@ from utils import *
 from runtimeclient import RuntimeClientManager
 from protos.run_mode_pb2 import Mode, TELEOP
 from protos.gamestate_pb2 import State
-from sheet import Sheet
+from config import Config
 from robot import Robot
 
 
@@ -84,7 +84,7 @@ def set_match_number(match_num):
     global MATCH_NUMBER
     if MATCH_NUMBER != match_num:
         MATCH_NUMBER = match_num
-        Sheet.get_match(match_num)
+        Config.get_match(match_num)
     else:
         send_match_info_to_ui()
 
@@ -206,18 +206,6 @@ def score_adjust(blue_score=None, gold_score=None):
     if gold_score is not None:
         ALLIANCES[ALLIANCE_COLOR.GOLD].set_score(gold_score)
     send_score_to_ui()
-    flush_scores()
-
-
-def flush_scores():
-    '''
-    Sends the most recent match score to the spreadsheet if connected to the internet
-    '''
-    Sheet.write_scores(
-        MATCH_NUMBER,
-        ALLIANCES[ALLIANCE_COLOR.BLUE].score,
-        ALLIANCES[ALLIANCE_COLOR.GOLD].score
-    )
 
 
 def send_match_info_to_ui():

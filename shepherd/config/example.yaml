@@ -1,12 +1,54 @@
-name: Example File
+# This is an example Shepherd config file
 
 reference: scoring_utils
 
-scoring-config:
+matches: # Blue 1, Blue 2, Gold 1, Gold 2
+    1: 1, 0, 0, 0
+    2: 0, 0, 0, 0
+    3: 0, 0, 0, 0
+    4: 0, 0, 0, 0
+    5: 0, 0, 0, 0
+    6: 0, 0, 0, 0
+    7: 0, 0, 0, 0
+    8: 0, 0, 0, 0
+    9: 0, 0, 0, 0
+    10: 0, 0, 0, 0
+    11: 0, 0, 0, 0
+    12: 0, 0, 0, 0
+
+teams:
+    - school: Staff Bot
+      number: 0
+      ip: 192.168.0.142
+    - school: Albany
+      number: 1
+      ip: 1.1.1.1 # Optional argument, default [number].local
+    - school: Middle College
+      number: 6
+    - school: Hercules
+      number: 9
+    - school: Skyline
+      number: 10
+    - school: El Cerrito
+      number: 12
+    - school: Pinole
+      number: 15
+    - school: ACLC
+      number: 17
+    - school: Hayward
+      number: 38
+    - school: Salesian
+      number: 40
+    - school: Staff Bot
+      number: 42
+
+scoring:
     category1:
         name: Cool Display Name
+        stage: teleop # Optional argument (default all)
         scores:
             - description: Checkbox objective with a score of 1
+              # Descriptions should be much shorter for referees to quickly identify objectives
               points: 1
             - description: Infinitely countable objective with a score of 5
               points: 5*
