@@ -9,7 +9,7 @@ from utils import *
 from runtimeclient import RuntimeClientManager
 from protos.run_mode_pb2 import IDLE, AUTO, TELEOP
 from protos.gamestate_pb2 import State
-from sheet import Sheet
+from config import Config
 from robot import Robot
 
 
@@ -31,6 +31,7 @@ ALLIANCES = {
 }
 
 CLIENTS = RuntimeClientManager(YC)
+data = Config('config/example.yaml')
 
 
 ###########################################
@@ -70,27 +71,26 @@ def start():
         else:
             print(f"Invalid State: {GAME_STATE}")
 
-def pull_from_sheets():
+def pull_from_data():
     while True:
         if not TIMERS.is_paused() and GAME_STATE not in [STATE.END, STATE.SETUP]:
-            Sheet.send_scores_for_icons(MATCH_NUMBER)
+            data.send_scores_for_icons(MATCH_NUMBER)
         time.sleep(2.0)
 
 
 def set_match_number(match_num):
     '''
     Retrieves all match info based on match number and sends this information to the UI.
-    If not already cached, fetches info from the spreadsheet, and caches it.
-    Fetching info from spreadsheet is asynchronous, will send a ydl header back with results
+    If not already cached, fetches info from the config, and caches it.
     '''
     global MATCH_NUMBER
     # if MATCH_NUMBER != match_num:
     #     MATCH_NUMBER = match_num
-    #     Sheet.get_match(match_num)
+    #     data.get_match(match_num)
     # else:
     #     send_match_info_to_ui()
     MATCH_NUMBER = match_num
-    Sheet.get_match(match_num)
+    data.get_match(match_num)
 
 
 
@@ -138,7 +138,7 @@ def to_setup(match_num, teams):
     calls reset_match() to move to setup state.
     By the end, should be ready to start match.
     '''
-    if Sheet.write_match_info(match_num, teams) == False:
+    if not data.write_match_info(match_num, teams):
         return
     global MATCH_NUMBER
     MATCH_NUMBER = match_num
@@ -217,7 +217,7 @@ def to_endgame():
 
 def to_end():
     '''
-    Go to the end state, finishing the game and flushing scores to the spreadsheet.
+    Go to the end state, finishing the game and flushing scores to the match database.
     '''
     global GAME_STATE
     GAME_STATE = STATE.END
@@ -232,7 +232,7 @@ def to_end():
     flush_scores()
 
     # temporary code for scrimmage, comment later
-    Sheet.write_scores_from_read_scores(MATCH_NUMBER)
+    data.write_scores_from_read_scores(MATCH_NUMBER)
 
     print("ENTERING END STATE")
 
@@ -282,10 +282,10 @@ def score_adjust(blue_score=None, gold_score=None):
 
 def flush_scores():
     '''
-    Sends the most recent match score to the spreadsheet if connected to the internet
+    Sends the most recent match score to the match database
     '''
     # temporary code for exhibition, uncomment later
-    # Sheet.write_scores(
+    # data.write_scores(
     #     MATCH_NUMBER,
     #     ALLIANCES[ALLIANCE_COLOR.BLUE].score,
     #     ALLIANCES[ALLIANCE_COLOR.GOLD].score
@@ -494,5 +494,5 @@ EVERYWHERE_FUNCTIONS = {
 }
 
 if __name__ == '__main__':
-    threading.Thread(target=pull_from_sheets, daemon=True).start()
+    threading.Thread(target=pull_from_data, daemon=True).start()
     start()

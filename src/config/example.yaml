@@ -1,0 +1,98 @@
+# This is an example Shepherd config file
+
+reference: scoring_utils
+
+matches: # Blue 1, Blue 2, Gold 1, Gold 2
+    1: 1, 0, 0, 0
+    2: 0, 0, 0, 0
+    3: 0, 0, 0, 0
+    4: 0, 0, 0, 0
+    5: 0, 0, 0, 0
+    6: 0, 0, 0, 0
+    7: 0, 0, 0, 0
+    8: 0, 0, 0, 0
+    9: 0, 0, 0, 0
+    10: 0, 0, 0, 0
+    11: 0, 0, 0, 0
+    12: 0, 0, 0, 0
+
+teams:
+    - school: Staff Bot
+      number: 0
+      ip: 192.168.0.142
+    - school: Albany
+      number: 1
+      ip: 1.1.1.1 # Optional argument, default [number].local
+    - school: Middle College
+      number: 6
+    - school: Hercules
+      number: 9
+    - school: Skyline
+      number: 10
+    - school: El Cerrito
+      number: 12
+    - school: Pinole
+      number: 15
+    - school: ACLC
+      number: 17
+    - school: Hayward
+      number: 38
+    - school: Salesian
+      number: 40
+    - school: Staff Bot
+      number: 42
+
+scoring:
+    category1:
+        name: Cool Display Name
+        stage: teleop # Optional argument (default all)
+        scores:
+            - description: Checkbox objective with a score of 1
+              # Descriptions should be much shorter for referees to quickly identify objectives
+              points: 1
+            - description: Infinitely countable objective with a score of 5
+              points: 5*
+            - description: Objective countable up to 3 times with a score of 3
+              points: 3*3
+    another:
+        name: Another Display Name
+        scores:
+            - description: Objective countable up to 3 times, first score gives 2, next 3, then 4
+              points: 2, 3, 4
+            - description: Infinitely countable, first score gives 1, every score thereafter gives 2
+              points: 1, 2*
+    again:
+        name: Something Else
+        scores:
+            - description: This counter is equivalent to...
+              points: 5, 5
+            - description: ...this counter
+              points: 5*2
+    more:
+        name: Wow
+        scores:
+            - description: Objective countable up to 4 times with a score of 3, assigned to x
+              points: 3*4
+              variable: x # Optional argument (default null)
+            - description: Checkbox objective with a variable score of 2 times x
+              points: 2x
+            - description: Checkbox objective with a value of 1, assigned to z, no points given
+              points: 1
+              display: False # Optional argument (default True)
+            - description: Custom input objective, input (_) directly converted into score value
+              points: _
+            - description: Custom input objective, input assigned to t, no points given
+              points: _
+              variable: t
+              display: False
+    hidden:
+        name: Special Section for backend calculations
+        scores:
+            - description: This objective is not displayed to the referees and is applied automatically
+              points: 5x
+              variable: y
+            - description: This objective is only applied when the condition is met
+              points: 5
+              condition: y > 10 # Optional argument (default True)
+            - description: This objective utilizes external Python from the referenced file to determine score
+              points: time_to_points(t)

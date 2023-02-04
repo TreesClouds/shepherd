@@ -41,7 +41,7 @@ class SHEPHERD_HEADER():
     def SET_TEAMS_INFO(teams):
         """
         teams = 4*{team_name, team_num, robot_ip, [starting_position]}
-        source: Sheet. Sets the match info, which has been fetched from a spreadsheet
+        source: match database. Sets the match info from the config data
         """
 
     @staticmethod
@@ -49,7 +49,7 @@ class SHEPHERD_HEADER():
     def SEND_SCORES(scores):
         """
         scores = [blue, gold]
-        source: Sheet.
+        source: match database
         """
 
     @staticmethod
@@ -339,9 +339,9 @@ UI_PAGES = {
 
 class CONSTANTS():
     BLIZZARD_WARNING_TIME = 170
-    CSV_FILE_NAME = "sheets/Shepherd Evergreen Database - Match Database.csv"
-    SPREADSHEET_ID = "11pJgMl_AXHWyu3QFoM6Rc_-5GkNmOx1UR0HYF1o8KwI"
     UI_PASSWORD_HASH = "44590c963be2a79f52c07f7a7572b3907bf5bb180d993bd31aab510d29bbfbd3"
+    CONFIG_FILE = "config/example.yaml"
+    SCORES_FILE = "config/score_backup.json"
 
 
 class ALLIANCE_COLOR():
